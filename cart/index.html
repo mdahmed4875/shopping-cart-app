@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Cart</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+     <h1>Cart Items</h1>
+    <div class="cart">
+        
+
+      </div>
+        <div id="item" style="display:none;">
+              <img src="../shop/tshirt.png" alt="Item" />
+              <div class="info">
+                <div class="row">
+                  <div class="price">$100</div>
+                  <div class="sized">S,M,L</div>
+                </div>
+                <div class="colors">
+                  Colors:
+                  <div class="row">
+                    <div class="circle" style="background-color: #000"></div>
+                    <div class="circle" style="background-color: #4938af"></div>
+                    <div class="circle" style="background-color: #203d3e"></div>
+                  </div>
+                </div>
+                <div class="row">Rating:</div>
+              </div>
+              <button class="removeBtn">Remove</button>
+    </div>
+    <script src="./script.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </body>
+</html>
