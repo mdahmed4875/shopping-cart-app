@@ -37,6 +37,7 @@ document.getElementById("signup").addEventListener("click",(e)=>{
             email.value=""
             password.value=""
             confirmpassword=""
+             window.location.href="/login.html";
         }
     }
     else{
