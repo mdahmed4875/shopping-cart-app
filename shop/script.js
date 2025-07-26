@@ -1,59 +1,114 @@
-let currUser=localStorage.getItem("currUser");
-if(currUser){
-/*const produtc = {
-  id: 1,
-  title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-  price: 109.95,
-  description:
-    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-  category: "men's clothing",
-  image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-  rating: { rate: 3.9, count: 120 },
-};*/
-document.addEventListener("DOMContentLoaded",()=>{
-  if(!localStorage.getItem("currUser")){
-    window.location.href="/login.html";
+let allProducts = [];
+
+function renderProducts(products) {
+  const productList = document.getElementById("product-list");
+  productList.innerHTML = ""; // clear before rendering
+
+  products.forEach(product => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "item";
+
+    itemDiv.innerHTML = `
+      <img src="${product.image}" alt="${product.title}" />
+      <div class="info">
+        <div class="row">
+          <div class="price">$${product.price}</div>
+          <div class="sized">${product.sizes?.join(",") || "N/A"}</div>
+        </div>
+        <div class="colors">
+          Colors:
+          <div class="row">
+            ${product.colors?.map(c => `<div class="circle" style="background-color: ${c}"></div>`).join("") || ""}
+          </div>
+        </div>
+        <div class="row">Rating: ${product.rating?.rate ?? "N/A"}</div>
+      </div>
+      <button class="addBtn">Add to Cart</button>
+    `;
+     const button = itemDiv.querySelector(".addBtn");
+  button.addEventListener("click", () => {
+    let currUser = JSON.parse(localStorage.getItem("currUser"));
+
+    if (!currUser) {
+      alert("Please log in to add items to cart.");
+      return;
+    }
+
+    // If cart doesn't exist, create an empty array
+    if (!Array.isArray(currUser.cart)) {
+      currUser.cart = [];
+    }
+
+    // Optionally check for duplicates based on product.id
+    const alreadyInCart = currUser.cart.some(item => item.id === product.id);
+    if (alreadyInCart) {
+      alert("Product already in cart.");
+      return;
+    }
+
+    // Push product to cart
+    currUser.cart.push(product);
+
+    // Save updated user back to localStorage
+    localStorage.setItem("currUser", JSON.stringify(currUser));
+
+    alert("Product added to cart!");
+  });
+    productList.appendChild(itemDiv);
+  });
+}
+
+// Fetch and prepare products
+document.addEventListener("DOMContentLoaded", () => {
+  let products = JSON.parse(localStorage.getItem("products") || "[]");
+
+  if (!products.length) {
+    fetch("https://fakestoreapi.com/products")
+      .then(res => res.json())
+      .then(data => {
+        const colors = ["red", "black", "blue", "green"];
+        const sizes = ["S", "M", "L", "XL"];
+
+        const newdata = data.map(item => ({
+          ...item,
+          colors: colors.slice(Math.floor(Math.random() * colors.length)),
+          sizes: sizes.slice(Math.floor(Math.random() * sizes.length))
+        }));
+
+        localStorage.setItem("products", JSON.stringify(newdata));
+        allProducts = newdata;
+        renderProducts(allProducts);
+      });
+  } else {
+    allProducts = products;
+    renderProducts(allProducts);
   }
-})
-let colors=['red',"black","blue","green"];
-let sizes=["xs","sm","md","lg","xl"];
-if(localStorage.getItem("products")){
-  let products=JSON.parse(localStorage.getItem("products"));
-  let mens=products.filter((item)=>item.category=="men's clothing")
-}
-else{
-fetch("https://fakestoreapi.com/products").then((ress)=>ress.json())
-.then((data)=>{
-  console.log(data);
-let newdata=data.map((item)=>{
-item.colors=colors.slice(Math.floor(Math.random()*4));
-item.sizes=sizes.slice(Math.floor(Math.random()*4));
-return item;
-})
-console.log(newdata);
-localStorage.setItem("products",JSON.stringify(newdata));
-})
-}
-}
-else{
-  window.location.href="/login.html";
-}
-let logoutBtn=document.getElementById("logout");
-logoutBtn.addEventListener("click",()=>{
-  localStorage.removeItem("currUser");
-  window.location.href="/login.html";
 });
-let addBtn=document.querySelectorAll(".addBtn");
-addBtn.forEach((btn)=>{
-  btn.addEventListener("click",(e)=>{
-    let currUser=JSON.parse(localStorage.getItem("currUser"));
-    let cartItems=0;
-    if(currUser.cartItems!=null)cartItems=currUser.cartItems+1;
-    currUser.cartItems=cartItems;
-    let users=JSON.parse(localStorage.getItem("users")??"[]");
-    let userIndex=users.findIndex((user)=>currUser.email==user.email);
-    users[userIndex]=currUser;
-    localStorage.setItem("users",JSON.stringify(users));
-    localStorage.setItem("currUser",JSON.stringify(currUser));
-  })
-})
+
+// Filter buttons
+document.querySelectorAll(".filter").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const category = btn.dataset.category;
+    if (category === "all") {
+      renderProducts(allProducts);
+    } else {
+      const filtered = allProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+      renderProducts(filtered);
+    }
+  });
+});
+const logoutBtn = document.getElementById('logout');
+
+logoutBtn.addEventListener('click', () => {
+  // ✅ Remove current user from localStorage
+  localStorage.removeItem('currUser');
+
+  // ✅ Optional: show confirmation or toast
+  alert("Logged out successfully!");
+
+  // ✅ Redirect to signup or login page
+  window.location.href = "/login.html"; // change to your login/signup path
+});

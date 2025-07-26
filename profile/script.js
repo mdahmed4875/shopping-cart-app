@@ -53,10 +53,16 @@ changepass.addEventListener("click",()=>{
         }
     }
 })
-logout.addEventListener("click",()=>{
-    localStorage.removeItem(currUser);
-    window.location.href="/login.html";
-})
+logout.addEventListener('click', () => {
+  // ✅ Remove current user from localStorage
+  localStorage.removeItem('currUser');
+
+  // ✅ Optional: show confirmation or toast
+  alert("Logged out successfully!");
+
+  // ✅ Redirect to signup or login page
+  window.location.href = "/login.html"; // change to your login/signup path
+});
 }
 else{
     window.location.href="/login.html";

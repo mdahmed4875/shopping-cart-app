@@ -1,36 +1,100 @@
-html,body{
-    margin:0;
-    padding:0;
+/* signup.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #fff;
 }
 
+.container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 40px 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
 
-.container{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height: 100%;
-    background-color: #b9c7bc;
+.container h1 {
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
 
+.container p {
+  margin: 10px 0;
+  font-size: 1rem;
 }
-input{
-    width:60%;
-    padding:10px;
-    margin:10px 0;
-    border:1px solid #ccc;
-    border-radius:5px;
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1rem;
 }
-button{
-    width:60%;
-    padding:10px;
-    margin:10px 0;
-    border:none;
-    border-radius:5px;
-    background-color:#28a745;
-    color:white;
-    cursor:pointer;
+
+input::placeholder {
+  color: #f1f1f1;
 }
-p{
-    font-size:large;
-    color:#555;
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #ff6b81;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ff4757;
+}
+
+#error {
+  color: #ffbaba;
+  margin-top: 10px;
+}
+
+#success {
+  color: #baffba;
+  margin-top: 10px;
+}
+
+.container div {
+  margin-top: 20px;
+}
+
+.container div p {
+  font-size: 0.95rem;
+}
+
+.container div button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  margin-top: 5px;
+  transition: all 0.3s ease;
+}
+
+.container div button:hover {
+  background-color: #fff;
+  color: #2a5298;
 }
